@@ -12,13 +12,17 @@ public class AddressBookProblem {
         int index = contactBook.indexOf(contact);
         if(index == -1) {
             contactBook.add(contact);
-            System.out.println("contect added");
+            System.out.println("contact added");
             contact.printContact();
         }else {
             System.out.println("Contact Already Exist");
             getContact(index).printContact();
         }
         return contactBook.size();
+    }
+
+    public ArrayList<ContactUpdation> getContact(){
+        return contactBook;
     }
 
     public int findContact(String firstName) {
@@ -127,38 +131,70 @@ public class AddressBookProblem {
         }
     }
 
+    public static void searchByCity(String city){
+        for(Map.Entry<String, AddressBookProblem> e:addressBooks.entrySet()){
+            AddressBookProblem current = e.getValue();
+            for(ContactUpdation c : current.getContact()){
+                if(c.values[3].equals(city)){
+                    c.printContact();
+                }
+
+            }
+        }
+    }
+    public static void searchByState(String state){
+        for(Map.Entry<String, AddressBookProblem> e:addressBooks.entrySet()){
+            AddressBookProblem current = e.getValue();
+            for(ContactUpdation c : current.getContact()){
+                if(c.values[4].equals(state)){
+                    c.printContact();
+                }
+
+            }
+        }
+    }
+
     public static void main(String[] args) {
         addressBooks.put("default", addressBook);
         int choice = 0;
         Scanner sc = new Scanner(System.in);
 
-        while(choice != 9){
-            System.out.println("0.Add Address book \n1. Add contact \n2. Edit contact " +
-                    "\n3.delete contact \n4. view all contacts. \n5. Exit");
-            System.out.print("\nEnter choice: ");
-            choice = sc.nextInt();
+        while (choice != 9) {
+            while (choice != 7) {
+                System.out.println("0.Add Address book \n1. Add contact \n2. Edit contact \n3.delete contact " +
+                        "\n4. view all contacts. \n5. search Contact by city. \n6. search contact by state. " +
+                        "\n7 Exit");
+                System.out.print("\nEnter choice: ");
+                choice = sc.nextInt();
 
-            switch(choice){
-                case 0:
-                    addAddressBook();
-                    break;
-                case 1:
-                    addEntries();
-                    break;
-                case 2:
-                    editEntry();
-                    break;
-                case 3:
-                    deleteEntry();
-                    break;
-                case 4:
-                    addressBook.printall();
-                    break;
+                switch (choice) {
+                    case 0:
+                        addAddressBook();
+                        break;
+                    case 1:
+                        addEntries();
+                        break;
+                    case 2:
+                        editEntry();
+                        break;
+                    case 3:
+                        deleteEntry();
+                        break;
+                    case 4:
+                        addressBook.printall();
+                        break;
 
-                case 5:
-                    System.out.println("thank you..!!!");
-                    break;
+                    case 5:
+                        searchByCity("Satara");
+                        break;
+                    case 6:
+                        searchByState("Maha");
+                        break;
+                    case 7:
+                        System.out.println("Thank you");
+                        break;
 
+                }
             }
         }
     }
