@@ -7,6 +7,8 @@ public class AddressBookProblem {
     ArrayList<ContactUpdation> contactBook = new ArrayList<ContactUpdation>();
     public static AddressBookProblem addressBook = new AddressBookProblem();
     public static HashMap<String, AddressBookProblem> addressBooks = new HashMap<>();
+    public static HashMap<String, ArrayList<ContactUpdation>> byState = new HashMap<>();
+    public static HashMap<String, ArrayList<ContactUpdation>> byCity = new HashMap<>();
 
     public int addContacts(ContactUpdation contact) {
         int index = contactBook.indexOf(contact);
@@ -14,6 +16,17 @@ public class AddressBookProblem {
             contactBook.add(contact);
             System.out.println("contact added");
             contact.printContact();
+            ArrayList<ContactUpdation> currStateList = byState.get(contact.values[4]);
+            if(currStateList == null)
+                currStateList = new ArrayList<>();
+            currStateList.add(contact);
+            byState.put(contact.values[4], currStateList);
+            ArrayList<ContactUpdation> currCityList = byState.get(contact.values[3]);
+            if(currCityList == null)
+                currCityList = new ArrayList<>();
+            currCityList.add(contact);
+            byCity.put(contact.values[3], currCityList);
+
         }else {
             System.out.println("Contact Already Exist");
             getContact(index).printContact();
@@ -132,25 +145,34 @@ public class AddressBookProblem {
     }
 
     public static void searchByCity(String city){
-        for(Map.Entry<String, AddressBookProblem> e:addressBooks.entrySet()){
-            AddressBookProblem current = e.getValue();
-            for(ContactUpdation c : current.getContact()){
-                if(c.values[3].equals(city)){
-                    c.printContact();
-                }
-
-            }
+        ArrayList<ContactUpdation> contactList = byCity.get(city);
+        if(contactList != null)
+            for(ContactUpdation c: contactList){
+                c.printContact();
         }
     }
     public static void searchByState(String state){
-        for(Map.Entry<String, AddressBookProblem> e:addressBooks.entrySet()){
-            AddressBookProblem current = e.getValue();
-            for(ContactUpdation c : current.getContact()){
-                if(c.values[4].equals(state)){
-                    c.printContact();
-                }
+        ArrayList<ContactUpdation> contactList = byState.get(state);
+        if(contactList != null)
+            for(ContactUpdation c: contactList){
+                c.printContact();
+        }
+    }
 
-            }
+    public static void totalContactByCity(String city){
+        ArrayList<ContactUpdation> curList = byCity.get(city);
+        if(curList == null){
+            System.out.println("Size is 0");
+        }else{
+            System.out.println("size is: " + curList.size());
+        }
+    }
+    public static void totalContactByState(String state){
+        ArrayList<ContactUpdation> curList = byState.get(state);
+        if(curList == null){
+            System.out.println("Size is 0");
+        }else{
+            System.out.println("size is: " + curList.size());
         }
     }
 
@@ -159,12 +181,12 @@ public class AddressBookProblem {
         int choice = 0;
         Scanner sc = new Scanner(System.in);
 
-        while (choice != 9) {
-            while (choice != 7) {
-                System.out.println("0.Add Address book \n1. Add contact \n2. Edit contact \n3.delete contact " +
-                        "\n4. view all contacts. \n5. search Contact by city. \n6. search contact by state. " +
-                        "\n7 Exit");
-                System.out.print("\nEnter choice: ");
+        while(choice != 9) {
+            System.out.println("0.Add Address book \n1. Add contact \n2. Edit contact \n3.delete contact " +
+                    "\n4. view all contacts. \n5. search Contact by city. \n6. search contact by state. " +
+                    "\n7 no of contact by city \n8. no of contact by state \n9.Exit");
+
+            System.out.print("\nEnter choice: ");
                 choice = sc.nextInt();
 
                 switch (choice) {
@@ -185,12 +207,30 @@ public class AddressBookProblem {
                         break;
 
                     case 5:
-                        searchByCity("Satara");
+                        sc.nextLine();
+                        System.out.println("Enter city Name");
+                        String city = sc.nextLine();
+                        searchByCity(city);
                         break;
                     case 6:
-                        searchByState("Maha");
+                        System.out.println("Enter state Name");
+                        sc.nextLine();
+                        String state = sc.nextLine();
+                        searchByState(state);
                         break;
                     case 7:
+                        System.out.println("Enter city Name");
+                        sc.nextLine();
+                        String city1 = sc.nextLine();
+                        totalContactByCity(city1);
+                        break;
+                    case 8:
+                        System.out.println("Enter state Name");
+                        sc.nextLine();
+                        String state1 = sc.nextLine();
+                        totalContactByState(state1);
+                        break;
+                    case 9:
                         System.out.println("Thank you");
                         break;
 
@@ -199,6 +239,3 @@ public class AddressBookProblem {
         }
     }
 }
-
-
-
