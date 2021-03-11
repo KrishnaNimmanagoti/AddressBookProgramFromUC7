@@ -1,11 +1,7 @@
 package com.bridgeLabz.addressBookFromUC11;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class MainApp {
@@ -21,8 +17,29 @@ public class MainApp {
     static HashMap<String, String> stateAndPerson = new HashMap<>();
     int count;
 
+    public static void sortByCityOrState() {
+        System.out.println("Select City or State to sort and Show Contacts: \n1-City: \n2-State: ");
+        String userChoice = scan.next();
+        if(userChoice.equals("1")){
+            HashMap<String, String> sortedCitydMap = new HashMap<>();
+            cityAndPerson.entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .forEachOrdered(x -> sortedCitydMap.put(x.getKey(), x.getValue()));
+            sortedCitydMap.entrySet().stream().forEach(System.out::println);
+        }
+        if(userChoice.equals("2")){
+            HashMap<String, String> sortedStatedMap = new HashMap<>();
+            stateAndPerson.entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .forEachOrdered(x -> sortedStatedMap.put(x.getKey(), x.getValue()));
+            sortedStatedMap.entrySet().stream().forEach(System.out::println);
+        }
+    }
+
     public static void sortingByPersons() {
-        List<String>sortedList=uniqueContacts.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<String> sortedList=uniqueContacts.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         sortedList.forEach(System.out::println);
     }
 
@@ -143,9 +160,7 @@ public class MainApp {
         showAddressBooks();
         System.out.println("Select the Address Book from the above: ");
         String addressBookName = addressBooksList.get(Integer.parseInt(scan.next()));
-
         contactsList = new HashMap<>();
-
         AddressBook addressBook = addressBookMap.get(addressBookName);
         int j = 1;
         for (Contact c : addressBook.getContactsList()) {
@@ -154,10 +169,8 @@ public class MainApp {
             j = j + 1;
         }
         System.out.println("\n");
-
         System.out.println("Select a contact to show details: ");
         int userSelectedContact = Integer.parseInt(scan.next());
-
         Contact newCon = null;
         for (Contact contact : addressBook.getContactsList()) {
             if (contact.getFirstName().equals(contactsList.get(userSelectedContact))) {
@@ -363,7 +376,8 @@ public class MainApp {
             System.out.println("7. search by City");
             System.out.println("8. Persons in City Or State");
             System.out.println("9. Sort and show all Persons");
-            System.out.println("10. Exit\\n");
+            System.out.println("10. Sort by city or state and show all Persons");
+            System.out.println("11. Exit\\n");
 
             System.out.println("Press a digit to select the required option: ");
             choice = scan.next();
@@ -383,10 +397,11 @@ public class MainApp {
                 case 7 -> searchByCity();
                 case 8 -> viewPersonByCityOrState();
                 case 9 -> sortingByPersons();
-                case 10 -> System.out.println("Program exited successfully.");
+                case 10 -> sortByCityOrState();
+                case 11 -> System.out.println("Program exited successfully.");
             }
 
-        } while (!"10".equals(choice));
+        } while (!"11".equals(choice));
         scan.close();
     }
 }
