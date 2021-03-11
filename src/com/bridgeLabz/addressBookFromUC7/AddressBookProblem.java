@@ -3,7 +3,7 @@ package com.bridgeLabz.addressBookFromUC7;
 import java.util.*;
 
 public class AddressBookProblem {
-
+    static Scanner sc = new Scanner(System.in);
     ArrayList<ContactUpdation> contactBook = new ArrayList<>();
     public static AddressBookProblem addressBook = new AddressBookProblem();
     public static HashMap<String, AddressBookProblem> addressBooks = new HashMap<>();
@@ -33,7 +33,6 @@ public class AddressBookProblem {
 
         }
         return contactBook.size();
-
     }
 
     public ArrayList<ContactUpdation> getContact() {
@@ -70,9 +69,8 @@ public class AddressBookProblem {
     }
 
     public static void addEntries() {
-        int noOfContacts;
 
-        Scanner sc = new Scanner(System.in);
+        int noOfContacts;
         System.out.print("\nEnter Contact to be saved: ");
         noOfContacts = sc.nextInt();
         sc.nextLine();
